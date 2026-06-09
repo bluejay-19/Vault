@@ -1,0 +1,201 @@
+/* ─── Reset & Base ─── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── Hide Streamlit Default UI ─── */
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
+header { visibility: hidden; }
+
+/* Remove top padding Streamlit adds */
+.block-container {
+    padding-top: 0 !important;
+    padding-bottom: 2rem !important;
+    max-width: 100% !important;
+}
+
+/* ─── App Background ─── */
+.stApp {
+    background-color: #0F1117 !important;
+}
+
+/* ─── Sidebar ─── */
+[data-testid="stSidebar"] {
+    background-color: #1A1D2E !important;
+    border-right: 1px solid #2A2D3E !important;
+}
+
+[data-testid="stSidebar"] .stMarkdown p {
+    color: #A0AEC0 !important;
+}
+
+/* ─── Typography ─── */
+body, .stApp {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #FFFFFF;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #FFFFFF !important;
+    font-weight: 700;
+}
+
+p, li {
+    color: #A0AEC0;
+}
+
+/* ─── Buttons ─── */
+.stButton > button {
+    background-color: #00C896 !important;
+    color: #0F1117 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    padding: 0.6rem 1.5rem !important;
+    cursor: pointer !important;
+    transition: opacity 0.2s ease !important;
+}
+
+.stButton > button:hover {
+    opacity: 0.85 !important;
+}
+
+/* Secondary button variant — wrap in a div with class="secondary-btn" */
+.secondary-btn .stButton > button {
+    background-color: transparent !important;
+    color: #FFFFFF !important;
+    border: 1px solid #FFFFFF !important;
+}
+
+/* ─── Input Fields ─── */
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea {
+    background-color: #1E2130 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #2A2D3E !important;
+    border-radius: 8px !important;
+}
+
+.stTextInput > div > div > input:focus,
+.stTextArea > div > div > textarea:focus {
+    border-color: #00C896 !important;
+    box-shadow: 0 0 0 1px #00C896 !important;
+}
+
+/* ─── Cards ─── */
+.vault-card {
+    background-color: #1E2130;
+    border-radius: 12px;
+    border: 1px solid #2A2D3E;
+    padding: 1.5rem;
+}
+
+/* ─── Frank's Amber Sections ─── */
+.frank-amber {
+    background-color: #F59E0B;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    color: #1A0F00;
+}
+
+.frank-amber p, .frank-amber span {
+    color: #1A0F00 !important;
+}
+
+/* ─── Metric Cards ─── */
+.metric-card {
+    background-color: #1E2130;
+    border-radius: 12px;
+    border: 1px solid #2A2D3E;
+    padding: 1.25rem 1.5rem;
+}
+
+.metric-label {
+    font-size: 13px;
+    color: #A0AEC0;
+    margin-bottom: 0.5rem;
+}
+
+.metric-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.metric-sub {
+    font-size: 13px;
+    color: #A0AEC0;
+    margin-top: 0.25rem;
+}
+
+/* ─── Verdict Badges ─── */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-catastrophic {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+}
+
+.badge-survivable {
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #F59E0B;
+}
+
+.badge-not-bad {
+    background-color: rgba(0, 200, 150, 0.2);
+    color: #00C896;
+}
+
+/* ─── Sidebar Nav Links ─── */
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    color: #A0AEC0;
+    text-decoration: none;
+    font-size: 15px;
+    margin-bottom: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-nav a:hover, .sidebar-nav a.active {
+    background-color: #00C896;
+    color: #0F1117;
+}
+
+/* ─── Plotly chart backgrounds ─── */
+.js-plotly-plot .plotly .bg {
+    fill: #1E2130 !important;
+}
+
+/* ─── File Uploader ─── */
+[data-testid="stFileUploader"] {
+    background-color: #1E2130 !important;
+    border: 2px dashed #2A2D3E !important;
+    border-radius: 12px !important;
+}
+
+/* ─── Chat Messages ─── */
+[data-testid="stChatMessage"] {
+    background-color: #1E2130 !important;
+    border-radius: 12px !important;
+    border: 1px solid #2A2D3E !important;
+}
+
+/* ─── Dividers ─── */
+hr {
+    border-color: #2A2D3E !important;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1A1D2E; }
+::-webkit-scrollbar-thumb { background: #2A2D3E; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3A3D4E; }
