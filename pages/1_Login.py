@@ -1,5 +1,6 @@
 import streamlit as st
-from utils import load_css
+from utils import load_css, get_supabase_client
+
 
 st.set_page_config(
     page_title="Vault — Login",
@@ -14,16 +15,43 @@ st.markdown("""
 <style>
     [data-testid="collapsedControl"] { display: none !important; }
     section[data-testid="stSidebar"] { display: none !important; }
-    .block-container { padding-top: 4rem !important; }
+    .block-container { padding-top: 4rem !important; max-width: 100% !important; }
+    .stApp { background-color: #0F1117 !important; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<div style="text-align: center; margin-bottom: 2rem;">
-    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
-    <h2 style="font-size: 1.5rem; font-weight: 700; color: #FFFFFF;">Vault</h2>
-    <p style="color: #A0AEC0; font-size: 0.9rem;">Your money. No excuses.</p>
-</div>
-""", unsafe_allow_html=True)
+mode = st.radio("", ["Login", "Sign Up"], horizontal=True)
 
-st.info("🚧 Login page — coming Day 2")
+email = st.text_input("Email", placeholder="youre@email.com")
+password = st.text_input("Password", placeholder="••••••••", type="password")
+
+# Password length warning message 
+if password and len(password) < 6: 
+    st.warning("Password must be at least 6 characters.")
+
+# TODO: Forgot password reset flow 
+
+# Toggle between Login & Sign Up
+if mode == "Login":
+    submitted = st.button('Login')
+else: 
+    submitted = st.button('Sign Up')
+
+# What happens when the button is clicked 
+if submitted == True: 
+    supabase = get_supabase_client()
+    try: 
+        if mode == "Login":
+            # Login 
+            response = supabase.auth.sign_in_with_password({"email": email, "password":password})
+        else: 
+            # Sign Up 
+            response = supabase.auth.sign_up({"email": email, "password": password})
+        st.session_state.user = response.session
+        st.switch_page("pages/2_Dashboard.py")
+    except Exception as e: 
+        if "Invalid login" in str(e) or "invalid_credentials" in str(e):
+            st.error("Wrong email or password.")
+        else: 
+            st.error(f"Something went wrong: {e}")
