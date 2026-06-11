@@ -1,5 +1,13 @@
+import os 
+from dotenv import load_dotenv
+from supabase import create_client
 import streamlit as st
 from pathlib import Path
+
+# Loading environment variables 
+# load_dotenv()
+from pathlib import Path 
+load_dotenv(Path(__file__).parent.parent / ".env")
 
 # shared helper code required by multiple pages 
 # each page in the app will import from here 
@@ -102,3 +110,9 @@ def render_sidebar(active_page: str = ""):
                 </div>
             </div>
         """, unsafe_allow_html=True)
+
+def get_supabase_client():
+    url = os.getenv("SUPABASE_URL")
+    key = os.getenv("SUPABASE_ANON_KEY")
+    return create_client(url, key)
+
