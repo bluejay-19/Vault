@@ -49,25 +49,37 @@ if uploaded_file is not None:
         st.error("So, whatever you just added did not work, I cannot read it, how about making it something I can read.")
         st.stop()
 
+    # lowercase columns & handle accidental trailing spaces 
+    df.columns = [col.lower().strip() for col in df.columns]
+
     # Validate the columns
-    
     # Validate empty dataframe
     if df.empty: 
         st.error("Yo! what do you expect me to do with a blank file, want me to draw you a picture? ")
         st.stop()
 
     # Validate Date column 
-    if 'Date' not in df.columns:
+    if 'date' not in df.columns:
         st.error("How do you expect to analyse your spending without knowing when you spent the money. Where are the dates buddy?")
         st.stop()
 
     # Validate categories
-    required_cols = {'Food', 'Rent', 'Transport', 'Entertainment', 'Other', 'Subscriptions', 'Groceries', 'Medical'}
-    if df.columns.isin(required_cols).any():
-        st.write("okay cool nice categories")
-    else: 
+    required_cols = {'food', 'rent', 'transport', 'entertainment', 'other', 'subscriptions', 'groceries', 'medical'}
+
+    # Categories present in this file 
+    present_cols = [col for col in df.columns if col in required_cols]
+    if len(present_cols) == 0: 
         st.error("Okay, so no categories, you couldnt do column names? really!")
         st.stop()
+
+    # Build category_breakdown - present categories get real totals, missing ones get 0 
+    category_breakdown = {}
+    for cat in required_cols:
+        if cat in present_cols:
+            category_breakdown[cat] = df[cat].sum()
+        else: 
+            category_breakdown[cat] = 0 
+        
     
     # Fill NaN rows with 0 
     df = df.fillna(0)
@@ -76,9 +88,12 @@ if uploaded_file is not None:
     st.dataframe(df.head(10))
 
     # Reference data 
-    category_cols = [col for col in df.columns if col != 'Date']
-    total_spent = df[category_cols].sum().sum()
-    biggest_category = df[category_cols].sum().idxmax()
+    # category_cols = [col for col in df.columns if col != 'Date']
+    # category_breakdown = df[category_cols].sum().to_dict()    
+    total_spent = df[present_cols].sum().sum()
+    biggest_category = df[present_cols].sum().idxmax()
+
+    st.write(category_breakdown)
 
     st.markdown(f""" 
         <div style="background: #F59E0B; border-radius: 12px; padding: 1.5rem;">
