@@ -15,6 +15,7 @@ render_sidebar(active_page="upload")
 st.markdown("## Upload Statements")
 st.markdown("<p style='color: #A0AEC0;'>CSV or Excel files. Frank will do the rest.</p>", unsafe_allow_html=True)
 
+
 # File uploader 
 uploaded_file = st.file_uploader(
     "Upload statement",
@@ -44,21 +45,29 @@ if uploaded_file is not None:
 
     # Validate the columns
     
-    # Is df empty?
+    # Validate empty dataframe
     if df.empty: 
         st.error("Yo! what do you expect me to do with a blank file, want me to draw you a picture? ")
         st.stop()
 
-    # Does Date column exist 
+    # Validate Date column 
     if 'Date' not in df.columns:
         st.error("How do you expect to analyse your spending without knowing when you spent the money. Where are the dates buddy?")
         st.stop()
 
-    # Do at least one of the following exist: food, rent, transport, entertainment, other exist 
+    # Validate categories
     required_cols = {'Food', 'Rent', 'Transport', 'Entertainment', 'Other', 'Subscriptions', 'Groceries', 'Medical'}
     if df.columns.isin(required_cols).any():
         st.write("okay cool nice categories")
     else: 
         st.error("Okay, so no categories, you couldnt do column names? really!")
         st.stop()
+    
+    # Fill NaN rows with 0 
+    df = df.fillna(0)
+
+    # Data preview 
+    st.dataframe(df.head(10))
+
+    # Reference data 
     
