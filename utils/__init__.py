@@ -61,7 +61,6 @@ def render_sidebar(active_page: str = ""):
         # Navigation
         pages = [
             ("dashboard", "🏠", "Dashboard", "pages/2_Dashboard.py"),
-            ("askfrank", "💬", "Ask Frank", "pages/4_Ask_Frank.py"),
             ("upload", "📤", "Upload", "pages/3_Upload.py"),
             ("history", "🕐", "History", "pages/5_History.py"),
         ]
