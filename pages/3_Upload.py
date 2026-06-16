@@ -123,3 +123,34 @@ if uploaded_file is not None:
                 Yea? and on what heres where all that moolah went {biggest_category}, ive seen raccons do better!"
         </div>
     """, unsafe_allow_html=True)
+
+    # Save button 
+    submitted = st.button("Save to Vault")
+
+    if submitted: 
+        try: 
+            supabase = get_supabase_client()
+            access_token = st.session_state.user.access_token
+            supabase.auth.set_session(access_token, st.session_state.user.refresh_token)
+            # store the user's ID 
+            user_id = st.session_state.user.user.id
+
+            # key = column name, value = data variable in python code
+            upload_dict = {
+                "user_id": user_id,
+                "month" : month_list.index(selected_month) + 1,
+                "year" : selected_year,
+                "income" : income,
+                "budget" : budget,
+                "net_savings" : savings, 
+                "total_spent" : float(total_spent),
+                "category_breakdown" : {k: float(v) for k, v in category_breakdown.items()}               
+                }
+            
+            # supabase insert 
+            supabase.table("uploads").insert(upload_dict).execute()
+
+            st.success("All data saved!")
+        except Exception as e:
+            st.error(f"Something went wrong: {e}")
+
