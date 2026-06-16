@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd 
-from utils import load_css, render_sidebar, check_auth
+import datetime
+from utils import load_css, render_sidebar, check_auth, get_supabase_client
 
 st.set_page_config(
     page_title="Vault — Upload",
@@ -28,12 +29,32 @@ uploaded_file = st.file_uploader(
     type=["csv", "xlsx"]
 )
 
+# Month selection 
+# get the current month number (1-12)
+current_month_idx = datetime.datetime.today().month - 1
+month_list = ["January", "February", "March", "April", "May", "June", 
+              "July", "August", "September", "October", "November", "December"]
+
+# set the index parameter to pre-select the current month 
+selected_month = st.selectbox("Select a month ", month_list, index=current_month_idx)
+
+# Year selection 
+# get the current calender year 
+current_year = datetime.datetime.now().year
+
+# generate choices from 2000 up until the current year 
+years = list(range(2000, current_year + 1)) 
+
+# reverse the list so that the newest year is at the top 
+selected_year = st.selectbox("Select Year", reversed(years))
+
 # Income this month 
 income = st.number_input("Income this month", min_value=0, value=0, step=100)
 # Budget this month 
 budget = st.number_input("Budget this month", min_value=0, value=0, step=100)
 # Savings this month 
 savings = st.number_input("Net Savings", value=0, step=100)
+
 
 # Parsing the uploaded file
 
