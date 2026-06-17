@@ -49,4 +49,30 @@ else:
         comparison = None
 
 
-    
+    # Summary cards 
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1: 
+        with st.container(border=True):
+            st.metric("Total Spent", f"${total_spent:,.2f}")
+
+    with col2: 
+        with st.container(border=True):
+            st.metric("Biggest Category", biggest_category)
+
+    with col3: 
+        with st.container(border=True):
+            if comparison is None: 
+                st.metric("vs Last Month", "No previous data")
+            else: 
+                st.metric("vs Last Month", f"{comparison:+.1f}%")
+
+    with col4: 
+        with st.container(border=True):
+            st.metric("Net Savings to Date", f"${total_savings:,.2f}")
+
+    # Donut Chart 
+
+    # Line Chart 
+
+    # Frank's roast 
