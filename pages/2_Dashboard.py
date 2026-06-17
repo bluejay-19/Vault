@@ -31,3 +31,22 @@ uploads = response.data
 if not uploads: 
     st.info("You have not uploaded anything, go to the uploads tab and upload a sheet for analysing.")
 
+else: 
+    latest = uploads[0] # most recent month (already ordered newesst first)
+
+    # parse category_breakdown - it comes back from Supabase as a dict already 
+    category_breakdown = latest["category_breakdown"]
+
+    # Summary numbers 
+    total_spent = latest["total_spent"]
+    biggest_category = max(category_breakdown, key=category_breakdown.get)
+    budget = latest["budget"]
+    total_savings = sum([upload["net_savings"] for upload in uploads])
+ 
+    if len(uploads) > 1 and uploads[1]["total_spent"] != 0:
+        comparison = ((uploads[0]["total_spent"] - uploads[1]["total_spent"]) / uploads[1]["total_spent"]) * 100
+    else: 
+        comparison = None
+
+
+    
