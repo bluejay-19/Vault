@@ -87,10 +87,10 @@ else:
     months = [f"{u['month']}/{u['year']}" for u in chart_data]
     spent_values = [u["total_spent"] for u in chart_data]
     savings_values = [u["net_savings"] for u in chart_data]
-
     fig2 = go.Figure()
     fig2.add_trace(go.Scatter(x=months, y=spent_values, name="Spent", line=dict(color="#E8920A")))
     fig2.add_trace(go.Scatter(x=months, y=savings_values, name="Net Savings", line=dict(color="#00B37D")))
     st.plotly_chart(fig2, use_container_width=True)
-    
-    
+
+    # Frank's Roast 
+    # Api call 
