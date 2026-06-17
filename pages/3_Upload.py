@@ -48,6 +48,9 @@ years = list(range(2000, current_year + 1))
 # reverse the list so that the newest year is at the top 
 selected_year = st.selectbox("Select Year", reversed(years))
 
+# currency select option
+currency = st.selectbox("Currency", ["$", "£", "€", "ZMW", "R", "AED"], index=0)
+
 # Income this month 
 income = st.number_input("Income this month", min_value=0, value=0, step=100)
 # Budget this month 
@@ -144,7 +147,8 @@ if uploaded_file is not None:
                 "budget" : budget,
                 "net_savings" : savings, 
                 "total_spent" : float(total_spent),
-                "category_breakdown" : {k: float(v) for k, v in category_breakdown.items()}               
+                "category_breakdown" : {k: float(v) for k, v in category_breakdown.items()},
+                "currency" : currency             
                 }
             
             # supabase insert 
