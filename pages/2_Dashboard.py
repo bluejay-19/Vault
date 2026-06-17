@@ -81,7 +81,7 @@ else:
     labels = filtered.keys()
     values = filtered.values()
 
-    fig = px.pie(names=labels, values=values, hole=0.5)
+    fig = px.pie(names=labels, values=values, hole=0.5, title="Where Your Money Went")
     st.plotly_chart(fig)
 
     # Line Chart - Savings trend 
@@ -91,6 +91,7 @@ else:
     savings_values = [u["net_savings"] for u in chart_data]
 
     fig2 = go.Figure()
+    fig2.update_layout(title="Savings Trend")
     fig2.add_trace(go.Scatter(x=months, y=spent_values, name="Spent", line=dict(color="#E8920A")))
     fig2.add_trace(go.Scatter(x=months, y=savings_values, name="Net Savings", line=dict(color="#00B37D")))
     st.plotly_chart(fig2, use_container_width=True)
