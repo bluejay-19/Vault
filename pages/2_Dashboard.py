@@ -1,4 +1,5 @@
 import streamlit as st
+import plotly.express as px 
 from utils import load_css, render_sidebar, check_auth, get_supabase_client
 
 st.set_page_config(
@@ -71,8 +72,14 @@ else:
         with st.container(border=True):
             st.metric("Net Savings to Date", f"${total_savings:,.2f}")
 
-    # Donut Chart 
+    # Donut Chart - where your money went 
+    labels = category_breakdown.keys()
+    values = category_breakdown.values()
 
-    # Line Chart 
+    fig = px.pie(names=labels, values=values, hole=0.5)
+    st.plotly_chart(fig)
+
+
+    # Line Chart - Savings trend 
 
     # Frank's roast 
