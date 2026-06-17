@@ -1,3 +1,4 @@
+import os 
 import streamlit as st
 import plotly.express as px 
 import plotly.graph_objects as go
@@ -45,6 +46,7 @@ else:
     biggest_category = max(category_breakdown, key=category_breakdown.get)
     budget = latest["budget"]
     total_savings = sum([upload["net_savings"] for upload in uploads])
+    currency = latest["currency"]
  
     if len(uploads) > 1 and uploads[1]["total_spent"] != 0:
         comparison = ((uploads[0]["total_spent"] - uploads[1]["total_spent"]) / uploads[1]["total_spent"]) * 100
@@ -57,7 +59,7 @@ else:
 
     with col1: 
         with st.container(border=True):
-            st.metric("Total Spent", f"${total_spent:,.2f}")
+            st.metric("Total Spent", f"{currency}{total_spent:,.2f}")
 
     with col2: 
         with st.container(border=True):
@@ -72,7 +74,7 @@ else:
 
     with col4: 
         with st.container(border=True):
-            st.metric("Net Savings to Date", f"${total_savings:,.2f}")
+            st.metric("Net Savings to Date", f"{currency}{total_savings:,.2f}")
 
     # Donut Chart - where your money went 
     filtered = {k: v for k, v in category_breakdown.items() if v > 0}
@@ -87,10 +89,39 @@ else:
     months = [f"{u['month']}/{u['year']}" for u in chart_data]
     spent_values = [u["total_spent"] for u in chart_data]
     savings_values = [u["net_savings"] for u in chart_data]
+
     fig2 = go.Figure()
     fig2.add_trace(go.Scatter(x=months, y=spent_values, name="Spent", line=dict(color="#E8920A")))
     fig2.add_trace(go.Scatter(x=months, y=savings_values, name="Net Savings", line=dict(color="#00B37D")))
     st.plotly_chart(fig2, use_container_width=True)
+    
+    # Frank's roast 
+    # API call 
+    client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+    prompt = f""" 
+    You are Frank, a blunt and witty raccoon financial advisor. 
+    Roast this user based on their real spending data. Be specific - use the actual numbers.
+    End with one genuine piece of actionable advice.
 
-    # Frank's Roast 
-    # Api call 
+    Their data this month: 
+    - Total spent: {total_spent}
+    - Budget: {budget}
+    - Biggest category: {biggest_category}
+    - Category_breakdown: {category_breakdown}
+    - Net savings: {total_savings}
+    
+    Keep it under 6 sentences. Be honest, brutal but funny.
+    """
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{"role": "user", "content":prompt}], 
+        max_tokens = 300
+    )
+    roast = response.choices[0].message.content
+
+    # display roast 
+    st.markdown(f"""
+    <div style="background:#E8920A; border-radius: 12px; padding: 1.5rem;">
+                {roast}
+    </div>
+    """, unsafe_allow_html=True)
