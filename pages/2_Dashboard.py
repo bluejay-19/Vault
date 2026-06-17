@@ -1,6 +1,8 @@
 import streamlit as st
 import plotly.express as px 
+import plotly.graph_objects as go
 from utils import load_css, render_sidebar, check_auth, get_supabase_client
+from groq import Groq
 
 st.set_page_config(
     page_title="Vault — Dashboard",
@@ -73,13 +75,22 @@ else:
             st.metric("Net Savings to Date", f"${total_savings:,.2f}")
 
     # Donut Chart - where your money went 
-    labels = category_breakdown.keys()
-    values = category_breakdown.values()
+    filtered = {k: v for k, v in category_breakdown.items() if v > 0}
+    labels = filtered.keys()
+    values = filtered.values()
 
     fig = px.pie(names=labels, values=values, hole=0.5)
     st.plotly_chart(fig)
 
-
     # Line Chart - Savings trend 
+    chart_data = list(reversed(uploads))
+    months = [f"{u['month']}/{u['year']}" for u in chart_data]
+    spent_values = [u["total_spent"] for u in chart_data]
+    savings_values = [u["net_savings"] for u in chart_data]
 
-    # Frank's roast 
+    fig2 = go.Figure()
+    fig2.add_trace(go.Scatter(x=months, y=spent_values, name="Spent", line=dict(color="#E8920A")))
+    fig2.add_trace(go.Scatter(x=months, y=savings_values, name="Net Savings", line=dict(color="#00B37D")))
+    st.plotly_chart(fig2, use_container_width=True)
+    
+    
