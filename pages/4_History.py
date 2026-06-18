@@ -81,4 +81,73 @@ else:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
+   # Month cards grid
+    month_names = ["", "January", "February", "March", "April", "May", "June",
+                   "July", "August", "September", "October", "November", "December"]
+
+    def get_verdict_badge(upload):
+        spent = upload["total_spent"]
+        budget = upload["budget"]
+        if budget == 0:
+            return "Survivable", "#E8920A", "#1A0F00"
+        ratio = spent / budget
+        if ratio > 1.1:
+            return "Catastrophic", "#EF4444", "#FFFFFF"
+        elif ratio > 0.9:
+            return "Survivable", "#E8920A", "#1A0F00"
+        else:
+            return "Not Bad", "#00B37D", "#0F1117"
+
+    def get_biggest_category(upload):
+        cb = upload.get("category_breakdown", {})
+        if not cb:
+            return "N/A"
+        filtered = {k: v for k, v in cb.items() if v > 0}
+        if not filtered:
+            return "N/A"
+        return max(filtered, key=filtered.get)
+
+    for i in range(0, len(uploads), 3):
+        row_uploads = uploads[i:i+3]
+        cols = st.columns(3)
+
+        for col, upload in zip(cols, row_uploads):
+            verdict, badge_bg, badge_text = get_verdict_badge(upload)
+            biggest_cat = get_biggest_category(upload)
+            month_name = month_names[upload["month"]]
+            net = upload["net_savings"]
+            net_color = "#00B37D" if net >= 0 else "#EF4444"
+            net_sign = "+" if net >= 0 else ""
+
+            with col:
+                with st.container(border=True):
+                    st.markdown(f"""
+                        <div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+                                <span style="font-size:1.05rem; font-weight:700; color:#FFFFFF;">{month_name} {upload['year']}</span>
+                                <span style="background:{badge_bg}; color:{badge_text}; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:600;">{verdict}</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                <span style="color:#A0AEC0; font-size:13px;">Total Spent</span>
+                                <span style="color:#EF4444; font-size:13px; font-weight:600;">{currency}{upload['total_spent']:,.2f}</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                <span style="color:#A0AEC0; font-size:13px;">Income</span>
+                                <span style="color:#00B37D; font-size:13px; font-weight:600;">{currency}{upload['income']:,.2f}</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                <span style="color:#A0AEC0; font-size:13px;">Budget</span>
+                                <span style="color:#FFFFFF; font-size:13px; font-weight:600;">{currency}{upload['budget']:,.2f}</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.75rem;">
+                                <span style="color:#A0AEC0; font-size:13px;">Net Savings</span>
+                                <span style="color:{net_color}; font-size:13px; font-weight:600;">{net_sign}{currency}{net:,.2f}</span>
+                            </div>
+                            <hr style="border-color:#2A2D3E; margin:0.5rem 0;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="color:#A0AEC0; font-size:12px;">Top category</span>
+                                <span style="border:1px solid #00B37D; color:#00B37D; padding:2px 10px; border-radius:20px; font-size:12px;">{biggest_cat}</span>
+                            </div>
+                        </div>
+                    """, unsafe_allow_html=True)
  
