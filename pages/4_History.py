@@ -49,3 +49,36 @@ else:
             sign = "+" if avg_monthly_savings >= 0 else ""
             st.markdown(f"<h2 style='color:{color}; margin:0;'>{sign}{currency}{avg_monthly_savings:,.2f}</h2>", unsafe_allow_html=True)
             st.markdown(f"<p style='color:#A0AEC0; font-size:12px;'>Per month average</p>", unsafe_allow_html=True)
+
+    with col3:
+        with st.container(border=True):
+            st.markdown(f"<p style='color:#A0AEC0; font-size:13px; margin-bottom:4px;'>Frank's Overall Verdict</p>", unsafe_allow_html=True)
+            if "frank_verdict" not in st.session_state:
+                try:
+                    client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+                    verdict_prompt = f"""
+                    You are Frank, a blunt raccoon financial advisor.
+                    Give a 3-4 word brutal but funny verdict on this user's overall finances.
+                    Total spent across all months: {currency}{total_spent_all:,.2f}
+                    Average monthly savings: {currency}{avg_monthly_savings:,.2f}
+                    Number of months tracked: {len(uploads)}
+                    Reply with ONLY the short verdict phrase. Examples: "Financially Feral", "Could Be Worse", "Catastrophic Spender", "Surprisingly Decent".
+                    """
+                    verdict_response = client.chat.completions.create(
+                        model="llama-3.3-70b-versatile",
+                        messages=[{"role": "user", "content": verdict_prompt}],
+                        max_tokens=20
+                    )
+                    st.session_state.frank_verdict = verdict_response.choices[0].message.content.strip()
+                except:
+                    st.session_state.frank_verdict = "Financially Questionable"
+
+            st.markdown(f"""
+                <div style="background:#E8920A; border-radius:8px; padding:0.75rem 1rem; margin-top:0.5rem;">
+                    <span style="font-size:1.1rem; font-weight:700; color:#1A0F00;">🦝 {st.session_state.frank_verdict}</span>
+                </div>
+            """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+ 
