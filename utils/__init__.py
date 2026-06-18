@@ -62,7 +62,7 @@ def render_sidebar(active_page: str = ""):
         pages = [
             ("dashboard", "🏠", "Dashboard", "pages/2_Dashboard.py"),
             ("upload", "📤", "Upload", "pages/3_Upload.py"),
-            ("history", "🕐", "History", "pages/5_History.py"),
+            ("history", "🕐", "History", "pages/4_History.py"),
         ]
 
         for key, icon, label, path in pages:
