@@ -24,3 +24,28 @@ user_id = st.session_state.user.user.id
 
 response = supabase.table("uploads").select("*").eq("user_id", user_id).order("year", desc=True).order("month", desc=True).execute()
 uploads = response.data
+
+if not uploads:
+    st.info("No history yet. Upload your first month to get started.")
+else:
+    currency = uploads[0]["currency"] if uploads[0].get("currency") else "$"
+
+    # Top summary cards
+    total_spent_all = sum(u["total_spent"] for u in uploads)
+    avg_monthly_savings = sum(u["net_savings"] for u in uploads) / len(uploads)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        with st.container(border=True):
+            st.markdown(f"<p style='color:#A0AEC0; font-size:13px; margin-bottom:4px;'>Total Spent (All Months)</p>", unsafe_allow_html=True)
+            st.markdown(f"<h2 style='color:#FFFFFF; margin:0;'>{currency}{total_spent_all:,.2f}</h2>", unsafe_allow_html=True)
+            st.markdown(f"<p style='color:#A0AEC0; font-size:12px;'>Across {len(uploads)} month(s)</p>", unsafe_allow_html=True)
+
+    with col2:
+        with st.container(border=True):
+            st.markdown(f"<p style='color:#A0AEC0; font-size:13px; margin-bottom:4px;'>Average Monthly Savings</p>", unsafe_allow_html=True)
+            color = "#00B37D" if avg_monthly_savings >= 0 else "#EF4444"
+            sign = "+" if avg_monthly_savings >= 0 else ""
+            st.markdown(f"<h2 style='color:{color}; margin:0;'>{sign}{currency}{avg_monthly_savings:,.2f}</h2>", unsafe_allow_html=True)
+            st.markdown(f"<p style='color:#A0AEC0; font-size:12px;'>Per month average</p>", unsafe_allow_html=True)
