@@ -1,5 +1,5 @@
 # Evaluation Approach 
-**Method:** Manual + semi-structured review against the test scenarios above. For each test file/scenario, generate Frank's roast and check it against these pass/fail criteria:
+**Method:** Manual + semi-structured review against the test scenarios in the test-set.md file. For each test file/scenario, generate Frank's roast and check it against these pass/fail criteria:
  
 1. **Accuracy** — Does Frank correctly reference the actual biggest category, correct over/under budget status, and correct direction of trend (when applicable)? Target: 100% across all scenarios — this is non-negotiable since wrong numbers undermine the whole app's credibility.
 
