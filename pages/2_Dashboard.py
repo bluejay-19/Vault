@@ -110,11 +110,11 @@ else:
     End with one genuine piece of actionable advice.
 
     Their data this month: 
-    - Total spent: {total_spent}
-    - Budget: {budget}
+    - Total spent: {currency}{total_spent}
+    - Budget: {currency}{budget}
     - Biggest category: {biggest_category}
-    - Category_breakdown: {category_breakdown}
-    - Net savings: {total_savings}
+    - Category_breakdown: {currency}{category_breakdown}
+    - Net savings: {currency}{total_savings}
     
     Keep it under 8 sentences. Be honest, brutal but funny.
     """
