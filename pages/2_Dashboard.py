@@ -84,14 +84,10 @@ else:
     labels = filtered.keys()
     values = filtered.values()
 
-    fig = px.pie(names=labels, values=values, hole=0.5, title="Where Your Money Went")
-    fig.update_traces(textposition='inside', textinfo='percent+label')
-    fig.update_layout(uniformtext_minsize=10, uniformtext_mode='hide')
+    fig1 = px.pie(names=labels, values=values, hole=0.5, title="Where Your Money Went")
+    fig1.update_traces(textposition='inside', textinfo='percent+label')
+    fig1.update_layout(uniformtext_minsize=10, uniformtext_mode='hide')
     
-    col_donut, col_space = st.columns([2,1])
-    with col_donut:
-        st.plotly_chart(fig, use_container_width=True)
-
     # Line Chart - Savings trend 
     chart_data = list(reversed(uploads))
     months = [f"{u['month']}/{u['year']}" for u in chart_data]
@@ -102,14 +98,18 @@ else:
     fig2.update_layout(title="Savings Trend")
     fig2.add_trace(go.Scatter(x=months, y=spent_values, name="Spent", line=dict(color="#E8920A")))
     fig2.add_trace(go.Scatter(x=months, y=savings_values, name="Net Savings", line=dict(color="#00B37D")))
-    st.plotly_chart(fig2, use_container_width=True)
+    
+    # Display charts 
+    col_charts, col_frank = st.columns([1.3, 1])
+    with col_charts: 
+        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True)
     
     # Frank's roast 
     # API call 
     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-    prompt = f""" 
-    
-    You are Frank, a blunt, witty raccoon financial advisor who roasts users based on their REAL spending data. You are funny but not cruel — your jokes always land because they're TRUE, backed by specific numbers.
+    prompt = f"""
+    You are Frank, a blunt, witty raccoon financial advisor. You roast users based on their REAL spending data, but you always back up the roast with specific numbers and end with genuinely useful advice.
 
     Their financial data this month:
     - Total spent: {currency}{total_spent:,.2f}
@@ -119,28 +119,30 @@ else:
     - Category breakdown: {category_breakdown}
     - Biggest category: {biggest_category}
 
-    Write a roast that:
-    1. Opens with a punchy, specific observation about their biggest spending category (use the real number)
-    2. Comments on at least one OTHER category that stands out (high or surprisingly low)
-    3. States clearly whether they're over, under, or right at budget — with the real numbers
-    4. Ends with exactly ONE genuine, specific, actionable piece of financial advice (not generic — tied to their actual data)
+    Write Frank's take in this structure:
 
-    Keep it to 5-7 sentences. Be specific, not generic. Never break character. Never apologize for being blunt.
-    """  
+    1. Opening roast (1-2 sentences) — punchy, specific, references their biggest category by name and number.
+    2. "Where it's going wrong" — name ONE or TWO categories that are eating their budget, with real numbers, in a slightly sarcastic tone.
+    3. "What's actually working" — if net savings is positive or a category is notably low, give brief genuine credit. If nothing is working, say so honestly.
+    4. "Frank's advice" — exactly ONE specific, actionable recommendation tied directly to their numbers (e.g. "cut your {{category}} spend by {currency}X and you'd hit your savings goal").
+
+    Use line breaks between these four sections. Keep total length to 6-8 sentences. Stay in character — blunt, funny, never generic AI-assistant tone.
+    """ 
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=[{"role": "user", "content":prompt}], 
-        max_tokens = 400
+        max_tokens = 500
     )
     roast = response.choices[0].message.content
 
-    # display roast 
-    st.markdown(f"""
-    <div style="background:#E8920A; border-radius: 12px; padding: 1.5rem;">
-        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
-            <span style="font-size:1.5rem;">🦝</span>
-            <span style="font-size:1.1rem; font-weight:700; color:#1A0F00;">Frank's Take</span>
+    # Display roast 
+    with col_frank:
+        st.markdown(f"""
+        <div style="background:#E8920A; border: 2px solid #00B37D; border-radius: 12px; padding: 1.5rem; height: 100%; overflow-wrap: break-word; word-wrap: break-word;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
+                <span style="font-size:1.4rem; border: 2px solid #00B37D; border-radius: 50%; padding: 4px; background: #1E2130;">🦝</span>
+                <span style="font-size:1.1rem; font-weight:700; color:#1A0F00;">Frank's Take</span>
+            </div>
+            <div style="color:#1A0F00; line-height:1.6; font-size:0.92rem;">{roast.replace(chr(10), '<br>')}</div>
         </div>
-        <p style="color:#1A0F00; margin:0; line-height:1.6;">{roast}</p>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
