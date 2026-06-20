@@ -69,6 +69,9 @@ else:
         with st.container(border=True):
             if comparison is None: 
                 st.metric("vs Last Month", "No previous data")
+            elif abs(comparison) > 999: 
+                sign = "+" if comparison > 0 else "-"
+                st.metric("vs Last Month", f"{sign}999%+")
             else: 
                 st.metric("vs Last Month", f"{comparison:+.1f}%")
 
