@@ -82,6 +82,8 @@ else:
     values = filtered.values()
 
     fig = px.pie(names=labels, values=values, hole=0.5, title="Where Your Money Went")
+    fig.update_traces(textposition='inside', textinfo='percent+label')
+    fig.update_layout(uniformtext_minsize=10, uniformtext_mode='hide')
     st.plotly_chart(fig)
 
     # Line Chart - Savings trend 
