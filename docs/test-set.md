@@ -20,7 +20,7 @@ These are test scenarios for validating Frank's roast logic against real spendin
 
 8. **First month, no comparison data** — Only one month of data exists. Frank should not reference "last month" or trends that don't exist. - PASS ( Test 3: "No previous data" shown correctly)
 
-9. **Extreme/unrealistic values** — A category with an implausibly large number (e.g. $999,999). Frank's response should remain coherent and not break formatting. - PASS functionality (no crash, correct math), FAIL COSMETICALLY (see donut cahrt bug note below)
+9. **Extreme/unrealistic values** — A category with an implausibly large number (e.g. $999,999). Frank's response should remain coherent and not break formatting. - PASS functionality (no crash, correct math), FAIL COSMETICALLY (see donut chart bug note below)
 
 10. **Minimal data — one category only** — User only logged spending in a single category. Frank should still produce a coherent roast without referencing categories that have no data.
 
