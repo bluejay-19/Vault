@@ -111,7 +111,7 @@ else:
     - Category_breakdown: {category_breakdown}
     - Net savings: {total_savings}
     
-    Keep it under 6 sentences. Be honest, brutal but funny.
+    Keep it under 8 sentences. Be honest, brutal but funny.
     """
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
