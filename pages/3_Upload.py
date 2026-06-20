@@ -52,11 +52,11 @@ selected_year = st.selectbox("Select Year", reversed(years))
 currency = st.selectbox("Currency", ["$", "£", "€", "ZMW", "R", "AED"], index=0)
 
 # Income this month 
-income = st.number_input("Income this month", min_value=0, value=0, step=100)
+income = st.number_input("Income this month", min_value=0, max_value=1_000_000, value=0, step=100)
 # Budget this month 
-budget = st.number_input("Budget this month", min_value=0, value=0, step=100)
+budget = st.number_input("Budget this month", min_value=0, max_value=1_000_000, value=0, step=100)
 # Savings this month 
-savings = st.number_input("Net Savings", value=0, step=100)
+savings = st.number_input("Net Savings", min_value=-1_000_000, max_value=1_000_000, value=0, step=100)
 
 
 # Parsing the uploaded file
