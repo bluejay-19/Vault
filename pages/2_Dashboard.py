@@ -87,7 +87,10 @@ else:
     fig = px.pie(names=labels, values=values, hole=0.5, title="Where Your Money Went")
     fig.update_traces(textposition='inside', textinfo='percent+label')
     fig.update_layout(uniformtext_minsize=10, uniformtext_mode='hide')
-    st.plotly_chart(fig)
+    
+    col_donut, col_space = st.columns([2,1])
+    with col_donut:
+        st.plotly_chart(fig, use_container_width=True)
 
     # Line Chart - Savings trend 
     chart_data = list(reversed(uploads))
@@ -105,29 +108,39 @@ else:
     # API call 
     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
     prompt = f""" 
-    You are Frank, a blunt and witty raccoon financial advisor. 
-    Roast this user based on their real spending data. Be specific - use the actual numbers.
-    End with one genuine piece of actionable advice.
-
-    Their data this month: 
-    - Total spent: {currency}{total_spent}
-    - Budget: {currency}{budget}
-    - Biggest category: {biggest_category}
-    - Category_breakdown: {currency}{category_breakdown}
-    - Net savings: {currency}{total_savings}
     
-    Keep it under 8 sentences. Be honest, brutal but funny.
-    """
+    You are Frank, a blunt, witty raccoon financial advisor who roasts users based on their REAL spending data. You are funny but not cruel — your jokes always land because they're TRUE, backed by specific numbers.
+
+    Their financial data this month:
+    - Total spent: {currency}{total_spent:,.2f}
+    - Budget: {currency}{budget:,.2f}
+    - Income: {currency}{latest['income']:,.2f}
+    - Net savings this month: {currency}{latest['net_savings']:,.2f}
+    - Category breakdown: {category_breakdown}
+    - Biggest category: {biggest_category}
+
+    Write a roast that:
+    1. Opens with a punchy, specific observation about their biggest spending category (use the real number)
+    2. Comments on at least one OTHER category that stands out (high or surprisingly low)
+    3. States clearly whether they're over, under, or right at budget — with the real numbers
+    4. Ends with exactly ONE genuine, specific, actionable piece of financial advice (not generic — tied to their actual data)
+
+    Keep it to 5-7 sentences. Be specific, not generic. Never break character. Never apologize for being blunt.
+    """  
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=[{"role": "user", "content":prompt}], 
-        max_tokens = 300
+        max_tokens = 400
     )
     roast = response.choices[0].message.content
 
     # display roast 
     st.markdown(f"""
     <div style="background:#E8920A; border-radius: 12px; padding: 1.5rem;">
-                {roast}
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+            <span style="font-size:1.5rem;">🦝</span>
+            <span style="font-size:1.1rem; font-weight:700; color:#1A0F00;">Frank's Take</span>
+        </div>
+        <p style="color:#1A0F00; margin:0; line-height:1.6;">{roast}</p>
     </div>
     """, unsafe_allow_html=True)
