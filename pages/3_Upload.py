@@ -138,6 +138,12 @@ if uploaded_file is not None:
             # store the user's ID 
             user_id = st.session_state.user.user.id
 
+            # check if this month/year already has an upload 
+            existing = supabase.table("uploads").select("id").eq("user_id", user_id).eq("month", month_list.index(selected_month) + 1).eq("year", selected_year).execute()
+            if existing.data:
+                st.error(f"You already have an upload for {selected_month} {selected_year}. Delete it from Supabase first if you want to replace it.")
+                st.stop()
+
             # key = column name, value = data variable in python code
             upload_dict = {
                 "user_id": user_id,
