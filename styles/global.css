@@ -45,7 +45,7 @@ p, li {
 
 /* ─── Buttons ─── */
 .stButton > button {
-    background-color: #00C896 !important;
+    background-color: #00B37D !important;
     color: #0F1117 !important;
     border: none !important;
     border-radius: 8px !important;
@@ -77,8 +77,8 @@ p, li {
 
 .stTextInput > div > div > input:focus,
 .stTextArea > div > div > textarea:focus {
-    border-color: #00C896 !important;
-    box-shadow: 0 0 0 1px #00C896 !important;
+    border-color: #00B37D !important;
+    box-shadow: 0 0 0 1px #00B37D !important;
 }
 
 /* ─── Cards ─── */
@@ -89,9 +89,20 @@ p, li {
     padding: 1.5rem;
 }
 
+/* ─── Green borders on boardered containers ─── */
+[data-testid="stVerticalBlock"]:has(div[data-testid="stMetric"]) {
+    border-color: #00B37D !important;
+    border-radius: 12px !important;
+}
+
+div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] > div > div[data-testid="stPlotlyChart"]) {
+    border: 1px solid #00B37D !important;
+    border-radius: 12px !important;
+}
+
 /* ─── Frank's Amber Sections ─── */
 .frank-amber {
-    background-color: #F59E0B;
+    background-color: #E8920A;
     border-radius: 12px;
     padding: 1.25rem 1.5rem;
     color: #1A0F00;
@@ -143,12 +154,12 @@ p, li {
 
 .badge-survivable {
     background-color: rgba(245, 158, 11, 0.2);
-    color: #F59E0B;
+    color: #E8920A ;
 }
 
 .badge-not-bad {
     background-color: rgba(0, 200, 150, 0.2);
-    color: #00C896;
+    color: #00B37D;
 }
 
 /* ─── Sidebar Nav Links ─── */
@@ -166,7 +177,7 @@ p, li {
 }
 
 .sidebar-nav a:hover, .sidebar-nav a.active {
-    background-color: #00C896;
+    background-color: #00B37D;
     color: #0F1117;
 }
 

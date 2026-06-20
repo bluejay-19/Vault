@@ -17,7 +17,7 @@ st.markdown("## Upload Statements")
 st.markdown("<p style='color: #A0AEC0;'>CSV or Excel files. Frank will do the rest.</p>", unsafe_allow_html=True)
 
 st.markdown(""" 
-    <div style="background: #F59E0B; border-radius: 12px; padding: 1.5rem;">
+    <div style="background: #E8920A; border-radius: 12px; padding: 1.5rem;">
         🦝"Go ahead, upload it. Let's see how bad the damage is this time around!"
     </div>
 """, unsafe_allow_html=True)
@@ -120,7 +120,7 @@ if uploaded_file is not None:
     st.write(category_breakdown)
 
     st.markdown(f""" 
-        <div style="background: #F59E0B; border-radius: 12px; padding: 1.5rem;">
+        <div style="background: #E8920A ; border-radius: 12px; padding: 1.5rem;">
                 🦝 <strong>Frank's Take</strong><br><br>
                 "Well, okay wow talk about a spender, look at your total {total_spent:.2f}.
                 Yea? and on what heres where all that moolah went {biggest_category}, ive seen raccons do better!"

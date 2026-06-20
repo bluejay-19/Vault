@@ -98,12 +98,21 @@ else:
     fig2.update_layout(title="Savings Trend")
     fig2.add_trace(go.Scatter(x=months, y=spent_values, name="Spent", line=dict(color="#E8920A")))
     fig2.add_trace(go.Scatter(x=months, y=savings_values, name="Net Savings", line=dict(color="#00B37D")))
+
+    fig2.update_layout(
+        title="Savings Trend",
+        xaxis_title="Month",
+        yaxis_title=f"Amount ({currency})"
+    )
+    fig2.update_traces(mode="lines+markers")
     
     # Display charts 
     col_charts, col_frank = st.columns([1.3, 1])
     with col_charts: 
-        st.plotly_chart(fig1, use_container_width=True)
-        st.plotly_chart(fig2, use_container_width=True)
+        with st.container(border=True):
+            st.plotly_chart(fig1, use_container_width=True)
+        with st.container(border=True):
+            st.plotly_chart(fig2, use_container_width=True)
     
     # Frank's roast 
     # API call 
@@ -143,6 +152,6 @@ else:
                 <span style="font-size:1.4rem; border: 2px solid #00B37D; border-radius: 50%; padding: 4px; background: #1E2130;">🦝</span>
                 <span style="font-size:1.1rem; font-weight:700; color:#1A0F00;">Frank's Take</span>
             </div>
-            <div style="color:#1A0F00; line-height:1.6; font-size:0.92rem;">{roast.replace(chr(10), '<br>')}</div>
+            <div style="color:#1A0F00; line-height:1.6; font-size:1rem;">{roast.replace(chr(10), '<br>')}</div>
         </div>
         """, unsafe_allow_html=True)

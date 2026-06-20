@@ -39,7 +39,7 @@ st.markdown("""
         margin-bottom: 2.5rem;
     }
     .cta-primary {
-        background-color: #00C896;
+        background-color: #00B37D;
         color: #0F1117;
         border: none;
         border-radius: 8px;
@@ -68,7 +68,7 @@ st.markdown("""
         width: 64px; height: 64px;
         border-radius: 50%;
         background: #1E2130;
-        border: 2px solid #00C896;
+        border: 2px solid #00B37D;
         display: flex; align-items: center; justify-content: center;
         font-size: 1.8rem;
         position: relative;
@@ -77,12 +77,12 @@ st.markdown("""
         position: absolute;
         top: 2px; right: 2px;
         width: 12px; height: 12px;
-        background: #00C896;
+        background: #00B37D;
         border-radius: 50%;
         border: 2px solid #1A1D2E;
     }
     .frank-speech-bubble {
-        background: #F59E0B;
+        background: #E8920A;
         border-radius: 12px;
         padding: 1.25rem 1.5rem;
         max-width: 380px;
@@ -96,7 +96,7 @@ st.markdown("""
         transform: translateX(-50%);
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
-        border-bottom: 10px solid #F59E0B;
+        border-bottom: 10px solid #E8920A;
     }
     .frank-bubble-text {
         font-size: 1rem;
@@ -150,17 +150,17 @@ st.markdown("""
 st.markdown("""
 <section class="features-section">
     <div class="feature-card">
-        <div style="font-size:1.5rem; color:#00C896; margin-bottom:1rem;">👁️</div>
+        <div style="font-size:1.5rem; color:#00B37D; margin-bottom:1rem;">👁️</div>
         <div class="feature-title">Track Everything</div>
         <p class="feature-desc">Upload your statements. See where every dollar goes. No hiding from the truth.</p>
     </div>
     <div class="feature-card">
-        <div style="font-size:1.5rem; color:#F59E0B; margin-bottom:1rem;">💬</div>
+        <div style="font-size:1.5rem; color:#E8920A; margin-bottom:1rem;">💬</div>
         <div class="feature-title">Frank's Hot Takes</div>
         <p class="feature-desc">AI-powered roasts based on your real spending. He's not mean, just honest.</p>
     </div>
     <div class="feature-card">
-        <div style="font-size:1.5rem; color:#00C896; margin-bottom:1rem;">🛡️</div>
+        <div style="font-size:1.5rem; color:#00B37D; margin-bottom:1rem;">🛡️</div>
         <div class="feature-title">Private by Default</div>
         <p class="feature-desc">Your data stays yours. Frank judges you, but he doesn't share your secrets.</p>
     </div>
