@@ -137,11 +137,12 @@ else:
 
     Use line breaks between these four sections. Keep total length to 6-8 sentences. Stay in character — blunt, funny, never generic AI-assistant tone.
     """ 
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content":prompt}], 
-        max_tokens = 500
-    )
+    with st.spinner("🦝 Frank is judging your spending..."):
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content":prompt}], 
+            max_tokens = 500
+        )
     roast = response.choices[0].message.content
 
     # Display roast 

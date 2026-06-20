@@ -64,11 +64,12 @@ else:
                     Number of months tracked: {len(uploads)}
                     Reply with ONLY the short verdict phrase. Examples: "Financially Feral", "Could Be Worse", "Catastrophic Spender", "Surprisingly Decent".
                     """
-                    verdict_response = client.chat.completions.create(
-                        model="llama-3.3-70b-versatile",
-                        messages=[{"role": "user", "content": verdict_prompt}],
-                        max_tokens=20
-                    )
+                    with st.spinner("🦝 Frank is dtermining your verdict"):
+                        verdict_response = client.chat.completions.create(
+                            model="llama-3.3-70b-versatile",
+                            messages=[{"role": "user", "content": verdict_prompt}],
+                            max_tokens=20
+                        )
                     st.session_state.frank_verdict = verdict_response.choices[0].message.content.strip()
                 except:
                     st.session_state.frank_verdict = "Financially Questionable"
