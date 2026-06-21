@@ -156,3 +156,43 @@ else:
             <div style="color:#1A0F00; line-height:1.6; font-size:1rem;">{roast.replace(chr(10), '<br>')}</div>
         </div>
         """, unsafe_allow_html=True)
+
+        # Ask Frank - question box 
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("### Ask Frank")
+
+        user_question = st.text_input("Got a question about your spending?", placeholder="e.g. Should i cut back on food?")
+        ask_submitted = st.button("Ask Frank")
+
+        if ask_submitted and user_question:
+            ask_prompt = f"""
+            You are Frank, a blunt witty raccoon financial advisor. The user is asking you a direct question about their finances.
+            
+            Their data this month:
+            - Total spent: {currency}{total_spent:,.2f}
+            - Budget: {currency}{budget:,.2f}
+            - Income: {currency}{latest['income']:,.2f}
+            - Net savings: {currency}{latest['net_savings']:,.2f}
+            - Category breakdown: {category_breakdown}
+            
+            Their question: "{user_question}"
+            
+            Answer in 2-4 sentences, staying in character — blunt, funny, but genuinely helpful and specific to their numbers.
+            """
+            
+            with st.spinner("🦝 Frank is thinking..."):
+                ask_response = client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    messages=[{"role": "user", "content": ask_prompt}],
+                    max_tokens=200
+                )
+            
+            frank_answer = ask_response.choices[0].message.content
+            
+            st.markdown(f"""
+            <div style="background:#1E2130; border: 1px solid #00B37D; border-radius: 12px; padding: 1.25rem; margin-top: 1rem;">
+                <p style="color:#A0AEC0; font-size:0.85rem; margin-bottom:0.5rem;">You asked: "{user_question}"</p>
+                <span style="color:#00B37D; font-weight:700;">🦝 Frank says:</span>
+                <p style="color:#FFFFFF; margin-top:0.5rem; line-height:1.6;">{frank_answer}</p>
+            </div>
+            """, unsafe_allow_html=True)
