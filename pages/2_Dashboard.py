@@ -64,7 +64,7 @@ else:
 
     with col2: 
         with st.container(border=True):
-            st.metric("Biggest Category", biggest_category)
+            st.metric("Income", f"{currency}{latest['income']:,.2f}")
 
     with col3: 
         with st.container(border=True):
@@ -79,6 +79,32 @@ else:
     with col4: 
         with st.container(border=True):
             st.metric("Net Savings to Date", f"{currency}{total_savings:,.2f}")
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Budget vs Actual progress bar
+    budget_pct = min((total_spent / budget * 100), 100) if budget > 0 else 0
+    over_budget = total_spent > budget
+    bar_color = "#EF4444" if over_budget else "#00B37D"
+    over_under = f"{currency}{abs(total_spent - budget):,.2f} {'over' if over_budget else 'under'} budget"
+
+    st.markdown(f"""
+    <div style="background:#1E2130; border: 1px solid #2A2D3E; border-radius: 12px; padding: 1.25rem 1.5rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+            <span style="color:#FFFFFF; font-weight:600;">🎯 Budget vs Actual</span>
+            <span style="color:{bar_color}; font-weight:600; font-size:0.9rem;">{currency}{total_spent:,.2f} / {currency}{budget:,.2f} — {over_under}</span>
+        </div>
+        <div style="background:#2A2D3E; border-radius:20px; height:12px; width:100%;">
+            <div style="background:{bar_color}; width:{budget_pct}%; height:12px; border-radius:20px; transition: width 0.3s ease;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:0.4rem;">
+            <span style="color:#A0AEC0; font-size:12px;">{currency}0</span>
+            <span style="color:#A0AEC0; font-size:12px;">{currency}{budget:,.2f} budget</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # Donut Chart - where your money went 
     filtered = {k: v for k, v in category_breakdown.items() if v > 0}
