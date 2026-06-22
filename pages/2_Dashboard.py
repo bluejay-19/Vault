@@ -177,6 +177,7 @@ else:
             
             Their question: "{user_question}"
             
+            If the question is unrelated to personal finance or their spending data, politelyredirect them back to financial topics in Frank's voice.
             Answer in 2-4 sentences, staying in character — blunt, funny, but genuinely helpful and specific to their numbers.
             """
             
