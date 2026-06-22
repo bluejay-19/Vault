@@ -138,6 +138,12 @@ else:
     with col_charts: 
         with st.container(border=True):
             st.plotly_chart(fig1, use_container_width=True)
+            st.markdown(f"""
+            <div style="display:flex; justify-content:space-between; align-items:center; padding: 0.25rem 0.5rem 0.25rem;">
+                <span style="color:#A0AEC0; font-size:15px;">Biggest category</span>
+                <span style="background:#00B37D; color:#0F1117; padding:5px 16px; border-radius:20px; font-size:13px; font-weight:600;">{biggest_category}</span>
+            </div>
+            """, unsafe_allow_html=True)
         with st.container(border=True):
             st.plotly_chart(fig2, use_container_width=True)
     
