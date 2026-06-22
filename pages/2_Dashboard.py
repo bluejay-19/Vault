@@ -2,6 +2,7 @@ import os
 import streamlit as st
 import plotly.express as px 
 import plotly.graph_objects as go
+import time 
 from utils import load_css, render_sidebar, check_auth, get_supabase_client
 from groq import Groq
 
@@ -137,13 +138,17 @@ else:
 
     Use line breaks between these four sections. Keep total length to 6-8 sentences. Stay in character — blunt, funny, never generic AI-assistant tone.
     """ 
+    start_time = time.time()
     with st.spinner("🦝 Frank is judging your spending..."):
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[{"role": "user", "content":prompt}], 
             max_tokens = 500
         )
+    end_time = time.time()
     roast = response.choices[0].message.content
+    print(f"[LATENCY] Frank roast generated in {end_time - start_time:.2f} seconds")
+    print(f"[FRANK ROAST] user_id: {user_id} | total_spent: {total_spent} | roast_length: {len(roast)}")
 
     # Display roast 
     with col_frank:
@@ -176,9 +181,9 @@ else:
             - Category breakdown: {category_breakdown}
             
             Their question: "{user_question}"
-            
-            If the question is unrelated to personal finance or their spending data, politelyredirect them back to financial topics in Frank's voice.
-            Answer in 2-4 sentences, staying in character — blunt, funny, but genuinely helpful and specific to their numbers.
+        
+            Answer in 2-4 sentences, staying in character — blunt, funny, but genuinely helpful and specific to their numbers. 
+            If the question is unrelated to personal finance or their spending data, redirect them back to financial topics in Frank's voice without breaking character.
             """
             
             with st.spinner("🦝 Frank is thinking..."):
@@ -189,7 +194,8 @@ else:
                 )
             
             frank_answer = ask_response.choices[0].message.content
-            
+            print(f"[FRANK Q&A] user_id: {user_id} | question: {user_question} | answer_length: {len(frank_answer)}")
+
             st.markdown(f"""
             <div style="background:#1E2130; border: 1px solid #00B37D; border-radius: 12px; padding: 1.25rem; margin-top: 1rem;">
                 <p style="color:#A0AEC0; font-size:0.85rem; margin-bottom:0.5rem;">You asked: "{user_question}"</p>
