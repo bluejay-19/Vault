@@ -51,13 +51,16 @@ def render_sidebar(active_page: str = ""):
         # Logo
         st.markdown("""
             <div style="padding: 1.5rem 1rem 1rem; display: flex; align-items: center; gap: 0.6rem;">
-                <span style="font-size: 1.5rem;">🔒</span>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="3" width="20" height="18" rx="2" stroke="#00B37D" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="3" stroke="#00B37D" stroke-width="2"/>
+                    <path d="M12 9V7M12 17v-2M9 12H7M17 12h-2" stroke="#00B37D" stroke-width="2" stroke-linecap="round"/>
+                    <rect x="17" y="7" width="2" height="3" rx="1" fill="#00B37D"/>
+                </svg>
                 <span style="font-size: 1.3rem; font-weight: 700; color: #FFFFFF;">Vault</span>
             </div>
         """, unsafe_allow_html=True)
-
-        st.markdown("<hr style='margin: 0 0 1rem; border-color: #2A2D3E;'>", unsafe_allow_html=True)
-
+        
         # Navigation
         pages = [
             ("dashboard", "🏠", "Dashboard", "pages/2_Dashboard.py"),
