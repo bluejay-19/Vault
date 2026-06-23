@@ -6,6 +6,11 @@
 footer { visibility: hidden; }
 header { visibility: hidden; }
 
+/* ─── Hide Streamlit's default sidebar nav ─── */
+[data-testid="stSidebarNav"] {
+    display: none !important;
+}
+
 /* Remove top padding Streamlit adds */
 .block-container {
     padding-top: 0 !important;
@@ -53,13 +58,23 @@ p, li {
     padding: 0.6rem 1.5rem !important;
     cursor: pointer !important;
     transition: opacity 0.2s ease !important;
+    opacity: 1 !important;
+}
+
+.stButton > button * {
+    color: #0F1117 !important;
+    opacity: 1 !important;
+}
+
+.stButton > button p {
+    color: #0F1117 !important;
 }
 
 .stButton > button:hover {
     opacity: 0.85 !important;
 }
 
-/* Secondary button variant — wrap in a div with class="secondary-btn" */
+/* Secondary button variant */
 .secondary-btn .stButton > button {
     background-color: transparent !important;
     color: #FFFFFF !important;
@@ -89,7 +104,7 @@ p, li {
     padding: 1.5rem;
 }
 
-/* ─── Green borders on boardered containers ─── */
+/* ─── Green borders on bordered containers ─── */
 [data-testid="stVerticalBlock"]:has(div[data-testid="stMetric"]) {
     border-color: #00B37D !important;
     border-radius: 12px !important;
@@ -154,7 +169,7 @@ div[data-testid="stVerticalBlock"]:has(> div[data-testid="stElementContainer"] >
 
 .badge-survivable {
     background-color: rgba(245, 158, 11, 0.2);
-    color: #E8920A ;
+    color: #E8920A;
 }
 
 .badge-not-bad {
