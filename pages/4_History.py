@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import time
 from utils import load_css, render_sidebar, check_auth, get_supabase_client
 from groq import Groq
 
@@ -20,20 +21,7 @@ st.markdown("""
         padding-left: 2rem !important;
         padding-right: 2rem !important;
     }
-    .stButton > button p {
-        color: #0F1117 !important;
-    }
-
-    .stButton > button span {
-        color: #0F1117 !important;
-    }
-
-    div[data-testid="stButton"] button {
-        color: #0F1117 !important;
-        opacity: 1 !important;
-    }
-
-    div[data-testid="stButton"] button * {
+    .stButton > button * {
         color: #0F1117 !important;
     }
 </style>
@@ -117,10 +105,20 @@ else:
 
             st.markdown("<div style='margin-top:0.75rem;'></div>", unsafe_allow_html=True)
 
-            if st.button("Regenerate Verdict", use_container_width=True):
-                if "frank_verdict" in st.session_state:
-                    del st.session_state.frank_verdict
-                st.rerun()
+            # Cooldown logic
+            now = time.time()
+            last_regenerated = st.session_state.get("last_verdict_time", 0)
+            cooldown_seconds = 30
+
+            if now - last_regenerated < cooldown_seconds:
+                remaining = int(cooldown_seconds - (now - last_regenerated))
+                st.markdown(f"<p style='color:#A0AEC0; font-size:12px; margin-top:0.5rem;'>Regenerate available in {remaining}s</p>", unsafe_allow_html=True)
+            else:
+                if st.button("🔄 Regenerate Verdict", use_container_width=True, help="Asks Frank for a fresh verdict"):
+                    if "frank_verdict" in st.session_state:
+                        del st.session_state.frank_verdict
+                    st.session_state.last_verdict_time = time.time()
+                    st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
 
