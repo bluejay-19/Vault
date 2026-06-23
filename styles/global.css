@@ -7,11 +7,8 @@ footer { visibility: hidden; }
 header { visibility: hidden; }
 
 /* ─── Hide Streamlit's default sidebar nav ─── */
-[data-testid="stSidebarNav"] {
+[data-testid="stSidebarNav"] ul {
     display: none !important;
-}
-[data-testid="collapsedControl"]{
-    display: flex !important;
 }
 
 /* Remove top padding Streamlit adds */
