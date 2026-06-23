@@ -117,7 +117,7 @@ else:
 
             st.markdown("<div style='margin-top:0.75rem;'></div>", unsafe_allow_html=True)
 
-            if st.button("🔄 Regenerate Verdict", use_container_width=True):
+            if st.button("Regenerate Verdict", use_container_width=True):
                 if "frank_verdict" in st.session_state:
                     del st.session_state.frank_verdict
                 st.rerun()
