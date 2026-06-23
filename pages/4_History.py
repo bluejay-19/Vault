@@ -13,8 +13,35 @@ load_css()
 check_auth()
 render_sidebar(active_page="history")
 
+st.markdown("""
+<style>
+    .block-container {
+        padding-top: 2rem !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+    .stButton > button p {
+        color: #0F1117 !important;
+    }
+
+    .stButton > button span {
+        color: #0F1117 !important;
+    }
+
+    div[data-testid="stButton"] button {
+        color: #0F1117 !important;
+        opacity: 1 !important;
+    }
+
+    div[data-testid="stButton"] button * {
+        color: #0F1117 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 st.markdown("## History")
 st.markdown("<p style='color: #A0AEC0;'>Your spending archive — all the evidence, none of the excuses.</p>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # Supabase fetch
 supabase = get_supabase_client()
@@ -30,7 +57,6 @@ if not uploads:
 else:
     currency = uploads[0]["currency"] if uploads[0].get("currency") else "$"
 
-    # Top summary cards
     total_spent_all = sum(u["total_spent"] for u in uploads)
     avg_monthly_savings = sum(u["net_savings"] for u in uploads) / len(uploads)
 
@@ -38,21 +64,30 @@ else:
 
     with col1:
         with st.container(border=True):
-            st.markdown(f"<p style='color:#A0AEC0; font-size:13px; margin-bottom:4px;'>Total Spent (All Months)</p>", unsafe_allow_html=True)
-            st.markdown(f"<h2 style='color:#FFFFFF; margin:0;'>{currency}{total_spent_all:,.2f}</h2>", unsafe_allow_html=True)
-            st.markdown(f"<p style='color:#A0AEC0; font-size:12px;'>Across {len(uploads)} month(s)</p>", unsafe_allow_html=True)
+            st.markdown(f"""
+                <div style="padding: 0.75rem 0;">
+                    <p style="color:#A0AEC0; font-size:13px; margin-bottom:8px;">Total Spent (All Months)</p>
+                    <h2 style="color:#FFFFFF; margin:0; font-size:2rem;">{currency}{total_spent_all:,.2f}</h2>
+                    <p style="color:#A0AEC0; font-size:12px; margin-top:6px;">Across {len(uploads)} month(s)</p>
+                </div>
+            """, unsafe_allow_html=True)
 
     with col2:
         with st.container(border=True):
-            st.markdown(f"<p style='color:#A0AEC0; font-size:13px; margin-bottom:4px;'>Average Monthly Savings</p>", unsafe_allow_html=True)
             color = "#00B37D" if avg_monthly_savings >= 0 else "#EF4444"
             sign = "+" if avg_monthly_savings >= 0 else ""
-            st.markdown(f"<h2 style='color:{color}; margin:0;'>{sign}{currency}{avg_monthly_savings:,.2f}</h2>", unsafe_allow_html=True)
-            st.markdown(f"<p style='color:#A0AEC0; font-size:12px;'>Per month average</p>", unsafe_allow_html=True)
+            st.markdown(f"""
+                <div style="padding: 0.75rem 0;">
+                    <p style="color:#A0AEC0; font-size:13px; margin-bottom:8px;">Average Monthly Savings</p>
+                    <h2 style="color:{color}; margin:0; font-size:2rem;">{sign}{currency}{avg_monthly_savings:,.2f}</h2>
+                    <p style="color:#A0AEC0; font-size:12px; margin-top:6px;">Per month average</p>
+                </div>
+            """, unsafe_allow_html=True)
 
     with col3:
         with st.container(border=True):
-            st.markdown(f"<p style='color:#A0AEC0; font-size:13px; margin-bottom:4px;'>Frank's Overall Verdict</p>", unsafe_allow_html=True)
+            st.markdown("<p style='color:#A0AEC0; font-size:13px; margin-bottom:8px;'>Frank's Overall Verdict</p>", unsafe_allow_html=True)
+
             if "frank_verdict" not in st.session_state:
                 try:
                     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
@@ -64,7 +99,7 @@ else:
                     Number of months tracked: {len(uploads)}
                     Reply with ONLY the short verdict phrase. Examples: "Financially Feral", "Could Be Worse", "Catastrophic Spender", "Surprisingly Decent".
                     """
-                    with st.spinner("🦝 Frank is dtermining your verdict"):
+                    with st.spinner("🦝 Frank is determining your verdict..."):
                         verdict_response = client.chat.completions.create(
                             model="llama-3.3-70b-versatile",
                             messages=[{"role": "user", "content": verdict_prompt}],
@@ -75,14 +110,20 @@ else:
                     st.session_state.frank_verdict = "Financially Questionable"
 
             st.markdown(f"""
-                <div style="background:#E8920A; border-radius:8px; padding:0.75rem 1rem; margin-top:0.5rem;">
-                    <span style="font-size:1.1rem; font-weight:700; color:#1A0F00;">🦝 {st.session_state.frank_verdict}</span>
+                <div style="background:#E8920A; border-radius:8px; padding:1rem 1.25rem;">
+                    <span style="font-size:1.2rem; font-weight:700; color:#1A0F00;">🦝 {st.session_state.frank_verdict}</span>
                 </div>
             """, unsafe_allow_html=True)
 
+            st.markdown("<div style='margin-top:0.75rem;'></div>", unsafe_allow_html=True)
+
+            if st.button("🔄 Regenerate Verdict", use_container_width=True):
+                if "frank_verdict" in st.session_state:
+                    del st.session_state.frank_verdict
+                st.rerun()
+
     st.markdown("<br>", unsafe_allow_html=True)
 
-   # Month cards grid
     month_names = ["", "January", "February", "March", "April", "May", "June",
                    "July", "August", "September", "October", "November", "December"]
 
@@ -123,32 +164,33 @@ else:
             with col:
                 with st.container(border=True):
                     st.markdown(f"""
-                        <div>
-                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
-                                <span style="font-size:1.05rem; font-weight:700; color:#FFFFFF;">{month_name} {upload['year']}</span>
-                                <span style="background:{badge_bg}; color:{badge_text}; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:600;">{verdict}</span>
+                        <div style="padding: 0.5rem 0;">
+                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+                                <span style="font-size:1.1rem; font-weight:700; color:#FFFFFF;">{month_name} {upload['year']}</span>
+                                <span style="background:{badge_bg}; color:{badge_text}; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;">{verdict}</span>
                             </div>
-                            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                                <span style="color:#A0AEC0; font-size:13px;">Total Spent</span>
-                                <span style="color:#EF4444; font-size:13px; font-weight:600;">{currency}{upload['total_spent']:,.2f}</span>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span style="color:#A0AEC0; font-size:14px;">Total Spent</span>
+                                <span style="color:#EF4444; font-size:14px; font-weight:600;">{currency}{upload['total_spent']:,.2f}</span>
                             </div>
-                            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                                <span style="color:#A0AEC0; font-size:13px;">Income</span>
-                                <span style="color:#00B37D; font-size:13px; font-weight:600;">{currency}{upload['income']:,.2f}</span>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span style="color:#A0AEC0; font-size:14px;">Income</span>
+                                <span style="color:#00B37D; font-size:14px; font-weight:600;">{currency}{upload['income']:,.2f}</span>
                             </div>
-                            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                                <span style="color:#A0AEC0; font-size:13px;">Budget</span>
-                                <span style="color:#FFFFFF; font-size:13px; font-weight:600;">{currency}{upload['budget']:,.2f}</span>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span style="color:#A0AEC0; font-size:14px;">Budget</span>
+                                <span style="color:#FFFFFF; font-size:14px; font-weight:600;">{currency}{upload['budget']:,.2f}</span>
                             </div>
-                            <div style="display:flex; justify-content:space-between; margin-bottom:0.75rem;">
-                                <span style="color:#A0AEC0; font-size:13px;">Net Savings</span>
-                                <span style="color:{net_color}; font-size:13px; font-weight:600;">{net_sign}{currency}{net:,.2f}</span>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+                                <span style="color:#A0AEC0; font-size:14px;">Net Savings</span>
+                                <span style="color:{net_color}; font-size:14px; font-weight:600;">{net_sign}{currency}{net:,.2f}</span>
                             </div>
                             <hr style="border-color:#2A2D3E; margin:0.5rem 0;">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span style="color:#A0AEC0; font-size:12px;">Top category</span>
-                                <span style="border:1px solid #00B37D; color:#00B37D; padding:2px 10px; border-radius:20px; font-size:12px;">{biggest_cat}</span>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.75rem;">
+                                <span style="color:#A0AEC0; font-size:13px;">Top category</span>
+                                <span style="border:1px solid #00B37D; color:#00B37D; padding:3px 12px; border-radius:20px; font-size:13px;">{biggest_cat}</span>
                             </div>
                         </div>
                     """, unsafe_allow_html=True)
- 
+
+        st.markdown("<br>", unsafe_allow_html=True)
