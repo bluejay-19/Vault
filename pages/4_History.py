@@ -115,7 +115,7 @@ else:
                 remaining = int(cooldown_seconds - (now - last_regenerated))
                 st.markdown(f"<p style='color:#A0AEC0; font-size:12px; margin-top:0.5rem;'>Regenerate available in {remaining}s</p>", unsafe_allow_html=True)
             else:
-                if st.button("🔄 Regenerate Verdict", use_container_width=True, help="Asks Frank for a fresh verdict"):
+                if st.button("Regenerate Verdict", use_container_width=True, help="Asks Frank for a fresh verdict"):
                     if "frank_verdict" in st.session_state:
                         del st.session_state.frank_verdict
                     st.session_state.last_verdict_time = time.time()
