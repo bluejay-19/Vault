@@ -1,6 +1,6 @@
 # 🔒 Vault — Your money. No excuses.
 
-> A personal finance tracker with Frank — a blunt, witty raccoon who roasts your spending based on real numbers, not generic advice.
+> A personal finance tracker with Frank, a blunt, witty raccoon who roasts your spending based on real numbers, not generic advice.
 
 <div align="center">
 
@@ -17,7 +17,7 @@
 
 ## What is Vault?
 
-Vault lets you upload your monthly bank statement, enter your income and budget, and instantly get a brutally honest AI-generated breakdown of your spending from **Frank** — a raccoon persona powered by Groq's llama-3.3-70b-versatile model.
+Vault lets you upload your monthly statement/excel sheeet , enter your income and budget, and instantly get a brutally honest AI-generated breakdown of your spending from **Frank**; a raccoon persona powered by Groq's llama-3.3-70b-versatile model.
 
 Frank references your actual numbers. Not boilerplate advice. Not gentle suggestions. Your numbers, no excuses.
 
@@ -29,7 +29,7 @@ Frank references your actual numbers. Not boilerplate advice. Not gentle suggest
 |---|---|
 | 📤 **Upload** | CSV or Excel monthly statements — adaptive category detection, no fixed format required |
 | 📊 **Dashboard** | 4 summary cards, budget vs actual bar, spending donut chart, savings trend line chart, and Frank's structured roast |
-| 💬 **Ask Frank** | Ask a direct question about your spending and get a data-grounded answer |
+| 💬 **Ask Frank (Quick Question)** | Ask a direct question about your spending and get a data-grounded answer |
 | 🕐 **History** | Month cards grid with verdict badges, Frank's overall verdict, regenerate on demand |
 | 💱 **Multi-currency** | AED, USD, GBP, EUR, ZMW, ZAR |
 | 🔒 **Secure** | Supabase Row Level Security — users only ever access their own data |
@@ -134,8 +134,7 @@ Vault accepts CSV or Excel files. Column names are **case-insensitive** — `Foo
 | `other` | Optional | |
 
 > **File size limit:** 10MB — **Supported formats:** CSV, XLSX
-
-Sample test files are available in the test_data/ folder
+> Sample test files are available in the test_data/ folder
 ---
 
 ## Supabase Schema
