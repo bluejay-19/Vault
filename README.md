@@ -174,6 +174,9 @@ Vault accepts CSV or Excel files. Column names are **case-insensitive** — `Foo
 - **Forgot password** not implemented in v1
 - **Multi-sheet Excel files** — first sheet only is read
 - **Groq rate limits** not explicitly enforced (mitigated by single roast per page load + 30-second cooldown on regenerate)
+- **Tied spending categories** — when two or more categories have 
+  identical totals, Frank references the first one encountered 
+  rather than acknowledging the tie. Planned fix in v2.
 
 ---
 
