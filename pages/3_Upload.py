@@ -123,12 +123,12 @@ if uploaded_file is not None:
         st.dataframe(df.head(10))
 
     st.markdown(f""" 
-        <div style="background:transparent; border: 1px solid #E8920A; border-radius: 12px; padding: 1.5rem;">
+        <div style="background:#1A1D2E; border: 1px solid #E8920A; border-radius: 12px; padding: 1.5rem;">
             <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
                 <span style="font-size:1.2rem;">🦝</span>
-                <strong style="color:#1A0F00;">Frank's Take</strong>
+                <strong style="color:#FFFFFF;">Frank's Take</strong>
             </div>
-            <p style="color:#1A0F00; margin:0;">Total spending: {currency}{total_spent:,.2f} — biggest drain is <strong>{biggest_category}</strong>. Let's see if you can explain yourself.</p>
+            <p style="color:#FFFFFF; margin:0;">Total spending: {currency}{total_spent:,.2f} — biggest drain is <strong>{biggest_category}</strong>. Let's see if you can explain yourself.</p>
         </div>
     """, unsafe_allow_html=True)
 
