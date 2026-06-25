@@ -80,6 +80,22 @@ else:
             if "frank_verdict" not in st.session_state:
                 try:
                     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+                    # Retry helper for Groq call 
+                    def call_groq_with_retry(client, messages, max_tokens, retries=2):
+                        for attempt in range(retries):
+                            try: 
+                                return client.chat.completions.create(
+                                    model="llama-3.3-70b-versatile",
+                                    messages=messages,
+                                    max_tokens=max_tokens
+                                )
+                            except Exception as e:
+                                if attempt < retries - 1: 
+                                    time.sleep(1)
+                                else: 
+                                    raise e
+                                
                     verdict_prompt = f"""
                     You are Frank, a blunt raccoon financial advisor.
                     Give a 3-4 word brutal but funny verdict on this user's overall finances.
@@ -89,9 +105,11 @@ else:
                     Reply with ONLY the short verdict phrase. Examples: "Financially Feral", "Could Be Worse", "Catastrophic Spender", "Surprisingly Decent".
                     """
                     with st.spinner("🦝 Frank is determining your verdict..."):
-                        verdict_response = client.chat.completions.create(
-                            model="llama-3.3-70b-versatile",
-                            messages=[{"role": "user", "content": verdict_prompt}],
+                        verdict_response = call_groq_with_retry(
+                            client,
+                            messages=[
+                                {"role": "system", "content": "You are Frank, a blunt raccoon financial advisor. Give short brutal verdicts on financial situations. Reply with ONLY the verdict phrase, nothing else."},
+                                {"role": "user", "content": verdict_prompt}],
                             max_tokens=20
                         )
                     st.session_state.frank_verdict = verdict_response.choices[0].message.content.strip()

@@ -151,6 +151,23 @@ else:
     # Frank's roast 
     # API call 
     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+    # Retry helper for all Groq calls 
+    # Retry Logic 
+    def call_groq_with_retry(client, messages, max_tokens, retries=2):
+        for attempt in range(retries):
+            try: 
+                return client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    messages=messages,
+                    max_tokens=max_tokens
+                )
+            except Exception as e: 
+                if attempt < retries - 1:
+                    time.sleep(1)
+                else: 
+                    raise e 
+            
     prompt = f"""
     You are Frank, a blunt, witty raccoon financial advisor. You roast users based on their REAL spending data, but you always back up the roast with specific numbers and end with genuinely useful advice.
 
@@ -173,9 +190,11 @@ else:
     """ 
     start_time = time.time()
     with st.spinner("🦝 Frank is judging your spending..."):
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[{"role": "user", "content":prompt}], 
+        response = call_groq_with_retry(
+            client,
+            messages=[
+                {"role": "system", "content": "You are Frank, a blunt witty raccoon financial advisor. You roast users based on their REAL spending data with specific numbers. Never break character. Never give generic advice. Always end with exactly one specific actionable recommendation tied to the user's actual numbers."},
+                {"role": "user", "content":prompt}], 
             max_tokens = 500
         )
     end_time = time.time()
@@ -203,8 +222,11 @@ else:
         ask_submitted = st.button("Ask Frank")
 
         if ask_submitted and user_question:
+            # Sanitize user input, strip HTML tags 
+            import re 
+            user_question_clean = re.sub(r'<[^>]+>','', user_question).strip()            
             ask_prompt = f"""
-            You are Frank, a blunt witty raccoon financial advisor. The user is asking you a direct question about their finances.
+            The user is asking you a direct question about their finances.
             
             Their data this month:
             - Total spent: {currency}{total_spent:,.2f}
@@ -213,25 +235,28 @@ else:
             - Net savings: {currency}{latest['net_savings']:,.2f}
             - Category breakdown: {category_breakdown}
             
-            Their question: "{user_question}"
+            Their question: "{user_question_clean}"
         
             Answer in 2-4 sentences, staying in character — blunt, funny, but genuinely helpful and specific to their numbers. 
             If the question is unrelated to personal finance or their spending data, redirect them back to financial topics in Frank's voice without breaking character.
             """
             
             with st.spinner("🦝 Frank is thinking..."):
-                ask_response = client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
-                    messages=[{"role": "user", "content": ask_prompt}],
+                ask_response = call_groq_with_retry(
+                    client,
+                    messages=[
+                        {"role": "system", "content": "You are Frank, a blunt witty raccoon financial advisor. Answer questions about the user's finances using their real spending data. Stay in character — blunt, funny, specific. If the question is unrelated to personal finance, redirect back to financial topics in Frank's voice."},
+                        {"role": "user", "content": ask_prompt}
+                    ],
                     max_tokens=200
                 )
             
             frank_answer = ask_response.choices[0].message.content
-            print(f"[FRANK Q&A] user_id: {user_id} | question: {user_question} | answer_length: {len(frank_answer)}")
+            print(f"[FRANK Q&A] user_id: {user_id} | question: {user_question_clean} | answer_length: {len(frank_answer)}")
 
             st.markdown(f"""
             <div style="background:#1E2130; border: 1px solid #00B37D; border-radius: 12px; padding: 1.25rem; margin-top: 1rem;">
-                <p style="color:#A0AEC0; font-size:0.85rem; margin-bottom:0.5rem;">You asked: "{user_question}"</p>
+                <p style="color:#A0AEC0; font-size:0.85rem; margin-bottom:0.5rem;">You asked: "{user_question_clean}"</p>
                 <span style="color:#00B37D; font-weight:700;">🦝 Frank says:</span>
                 <p style="color:#FFFFFF; margin-top:0.5rem; line-height:1.6;">{frank_answer}</p>
             </div>
