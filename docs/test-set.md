@@ -20,7 +20,7 @@ These are test scenarios for validating Frank's roast logic against real spendin
 
 8. **First month, no comparison data** — Only one month of data exists. Frank should not reference "last month" or trends that don't exist. - **PASS** ( Test 3: "No previous data" shown correctly) -
 
-9. **Extreme/unrealistic values** — A category with an implausibly large number (e.g. $999,999). Frank's response should remain coherent and not break formatting. - PASS functionality (no crash, correct math), **FAIL** COSMETICALLY (see donut chart bug note below) **FIXED**
+9. **Extreme/unrealistic values** — A category with an implausibly large number (e.g. $999,999). Frank's response should remain coherent and not break formatting. - PASS functionality (no crash, correct math), **PASS** COSMETICALLY (see donut chart bug note below) **FIXED**
 
 10. **Minimal data — one category only** — User only logged spending in a single category. Frank should still produce a coherent roast without referencing categories that have no data. - **PASS** (coherent roast, no missing category references)
 
@@ -38,24 +38,13 @@ These are test scenarios for validating Frank's roast logic against real spendin
 
 17. **Net savings far exceeds income** — Data inconsistency (more saved than earned). Frank shouldn't break, even on logically odd input. - **PASS** (stability: no crash and data was handled gracefully)
 
-18. **All categories roughly equal** — Spending evenly spread, no single dominant category. Frank should note the lack of a clear "problem area" rather than forcing one. - **PASS**
+18. **All categories roughly equal** — Spending evenly spread, no single dominant category. Frank should note the lack of a clear "problem area" rather than forcing one. - **PASS** (with note - Frank picks first category when tied rather than acknowledging the tie explicitly. No crash, correct numbers. Low priority tweak for v2 - could add instructon to acknowledge near-equal spending distribution)
 
 19. **Re-roast / "Another roast" button** — Same data, second generation. Response should be meaningfully different in wording from the first, not a near-duplicate. - **PASS** (meaningfully different responses on the same question)
 
 20. **Currency/number formatting check** — Large numbers (e.g. $12,450.75) should be referenced by Frank in a readable way, not as raw unformatted floats. - **PASS** (partially observed, large numbers displayed corectly with commas (e.g. $1,000,510.00), no formatting bugs seen)
 
-### Bugs
-BUGS FOUND:
-1. Donut chart label overlap — when category values are extremely small 
-   relative to the dominant category (e.g. <0.03%), their percentage labels 
-   stack and overlap illegibly above the chart. Reproduced in Test 4. Fix: 
-   filter/hide labels below a minimum threshold, or suppress labels for 
-   slices under ~1%.
-
-2. "vs Last Month" and "Net Savings to Date" can show extreme or misleading 
-   values when test/real data has drastically different scales between 
-   consecutive months (e.g. +43495.2%). Math is correct, but the UX reads 
-   as broken to users. Consider capping displayed percentage or adding 
-   a tooltip/disclaimer for outlier swings.
-
-TESTING SUMMARY: 20 of 20 scenarios tested across 10 or so uploads across three test accounts
+### TESTING SUMMARY: 
+## 20 of 20 scenarios tested across 2 test accounts.
+> 18 full PASS, 1 stability PASS (scenario 17), 1 PASS with note (scenario 18).
+No crashes across any scenario. 2 bugs previously found and fixed.
