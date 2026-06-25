@@ -117,8 +117,8 @@ else:
                     st.session_state.frank_verdict = "Financially Questionable"
 
             st.markdown(f"""
-                <div style="background:#E8920A; border-radius:8px; padding:1rem 1.25rem;">
-                    <span style="font-size:1.2rem; font-weight:700; color:#1A0F00;">🦝 {st.session_state.frank_verdict}</span>
+                <div style="background:transparent; border: 1px solid #E8920A; border-radius:8px; padding:1rem 1.25rem;">
+                    <span style="font-size:1.2rem; font-weight:700; color:#E8920A;">🦝 {st.session_state.frank_verdict}</span>
                 </div>
             """, unsafe_allow_html=True)
 
