@@ -34,9 +34,9 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # Frank quote card
 st.markdown(""" 
-    <div style="background: #E8920A; border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display:flex; align-items:center; gap:0.75rem;">
+    <div style="background:#1A1D2E; border: 1px solid #E8920A; border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display:flex; align-items:center; gap:0.75rem;">
         <span style="font-size:1.5rem;">🦝</span>
-        <span style="color:#1A0F00; font-weight:500; font-size:1rem;">"Go ahead, upload it. Let's see how bad the damage is this time around!"</span>
+        <span style="color:#E8920A; font-weight:500; font-size:1rem;">"Go ahead, upload it. Let's see how bad the damage is this time around!"</span>
     </div>
 """, unsafe_allow_html=True)
 
@@ -123,7 +123,7 @@ if uploaded_file is not None:
         st.dataframe(df.head(10))
 
     st.markdown(f""" 
-        <div style="background:#E8920A; border-radius:12px; padding:1.25rem 1.5rem; margin-bottom:1rem;">
+        <div style="background:transparent; border: 1px solid #E8920A; border-radius: 12px; padding: 1.5rem;">
             <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
                 <span style="font-size:1.2rem;">🦝</span>
                 <strong style="color:#1A0F00;">Frank's Take</strong>
