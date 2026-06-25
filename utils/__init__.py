@@ -34,18 +34,13 @@ def render_sidebar(active_page: str = ""):
     Render the consistent sidebar that appears on all authenticated pages.
     active_page: one of 'dashboard', 'askfrank', 'upload', 'history'
     """
-    frank_quips = [
-        "Still spending, I see.",
-        "I've seen worse... barely.",
-        "Your wallet called. It's empty.",
-        "Judging your choices.",
-        "The numbers don't lie.",
-    ]
+    frank_quips = {
+        "dashboard": "Still spending, I see.",
+        "upload": "The numbers don't lie.",
+        "history": "Your wallet called. It's empty."
+    }
 
-    # Rotate quip based on a counter in session state
-    if "quip_index" not in st.session_state:
-        st.session_state.quip_index = 0
-    quip = frank_quips[st.session_state.quip_index % len(frank_quips)]
+    quip = frank_quips.get(active_page, "Judging your choices.")
 
     with st.sidebar:
         # Logo
