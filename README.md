@@ -3,9 +3,12 @@
 > A personal finance tracker with Frank, a blunt, witty raccoon who roasts your spending based on real numbers, not generic advice.
 ---
 
+## Live app 
+🔗 **Live App:** https://vault-finance.streamlit.app/
+
 ## What is Vault?
 
-Vault lets you upload your monthly statement/excel sheeet , enter your income and budget, and instantly get a brutally honest AI-generated breakdown of your spending from **Frank**; a raccoon persona powered by Groq's llama-3.3-70b-versatile model.
+Vault lets you upload your monthly statement or Excel sheet , enter your income and budget, and instantly get a brutally honest AI-generated breakdown of your spending from **Frank**; a raccoon persona powered by Groq's llama-3.3-70b-versatile model.
 
 Frank references your actual numbers. Not boilerplate advice. Not gentle suggestions. Your numbers, no excuses.
 
@@ -24,9 +27,67 @@ Frank references your actual numbers. Not boilerplate advice. Not gentle suggest
 
 ---
 
+## Screenshots 
+|
+Landing
+|
+Login/Sign Up
+|
+Dashboard 
+|
+History 
+|
+|
+---
+|
+---
+|
+---
+|
+---
+|
+|
+!
+[
+Landing
+](
+docs/screenshots/landing.png
+) 
+| 
+!
+[
+Login/ Sign Up
+](
+docs/screenshots/login.png
+)
+|
+!
+[
+Dashboard
+](
+docs/screenshots/dashboard.png
+) 
+|
+!
+[
+Upload
+](
+docs/screenshots/upload.png
+)
+| 
+!
+[
+History
+](
+docs/screenshots/history.png
+) 
+|
+
+---
+
 ## Tech Stack
 
-<div align="center">
+<div>
 
 ![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.35-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
@@ -151,7 +212,7 @@ Vault accepts CSV or Excel files. Column names are **case-insensitive** — `Foo
 | `net_savings` | float4 | Can be negative |
 | `total_spent` | float4 | Computed by Pandas on upload |
 | `category_breakdown` | jsonb | `{"food": 461, "rent": 1200, ...}` |
-| `currency` | text | Default: USD |
+| `currency` | text | Default: $ |
 | `created_at` | timestamptz | Auto-generated |
 
 > RLS policies enforced: users can only `SELECT` and `INSERT` their own rows. Duplicate month/year uploads per user are blocked at the database level.
