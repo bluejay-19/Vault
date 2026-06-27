@@ -27,61 +27,23 @@ Frank references your actual numbers. Not boilerplate advice. Not gentle suggest
 
 ---
 
-## Screenshots 
-|
-Landing
-|
-Login/Sign Up
-|
-Dashboard 
-|
-History 
-|
-|
----
-|
----
-|
----
-|
----
-|
-|
-!
-[
-Landing
-](
-docs/screenshots/landing.png
-) 
-| 
-!
-[
-Login/ Sign Up
-](
-docs/screenshots/login.png
-)
-|
-!
-[
-Dashboard
-](
-docs/screenshots/dashboard.png
-) 
-|
-!
-[
-Upload
-](
-docs/screenshots/upload.png
-)
-| 
-!
-[
-History
-](
-docs/screenshots/history.png
-) 
-|
+## Screenshots
+
+### Landing
+![Landing](docs/screenshots/landing.png)
+
+### Login / Sign Up
+![Login](docs/screenshots/login.png)
+
+### Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+![Dashboard Alt](docs/screenshots/dashboard-1.png)
+
+### Upload
+![Upload](docs/screenshots/upload.png)
+
+### History
+![History](docs/screenshots/history.png)
 
 ---
 
