@@ -80,7 +80,6 @@ Frank references your actual numbers. Not boilerplate advice. Not gentle suggest
 vault/
 ├── app.py                      # Landing page (entry point)
 ├── requirements.txt            # Pinned dependencies
-├── test.py                     # Local testing script
 ├── .env                        # Local secrets (never committed)
 ├── .gitignore
 │
@@ -202,6 +201,18 @@ Vault accepts CSV or Excel files. Column names are **case-insensitive** — `Foo
 - **Tied spending categories** — when two or more categories have 
   identical totals, Frank references the first one encountered 
   rather than acknowledging the tie. Planned fix in v2.
+
+---
+
+## v2 Roadmap
+
+- 💬 **Ask Frank (full chat)** — conversation history, multi-turn dialogue
+- 🔐 **Persistent sessions** — stay logged in across page refreshes via browser storage
+- 📧 **Forgot password** — email-based password reset flow
+- 📊 **Multi-sheet Excel support** — upload a full year of data in one file, one sheet per month
+- 🏦 **Bank export formats** — direct support for common bank statement CSV formats
+- 🔔 **Spending alerts** — monthly reminders and budget threshold notifications
+- 📥 **Export data** — download your spending history as CSV or PDF report
 
 ---
 
