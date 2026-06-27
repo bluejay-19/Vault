@@ -201,6 +201,7 @@ Vault accepts CSV or Excel files. Column names are **case-insensitive** — `Foo
 - **Tied spending categories** — when two or more categories have 
   identical totals, Frank references the first one encountered 
   rather than acknowledging the tie. Planned fix in v2.
+- **Not mobile optimized** — designed for desktop; multi-column layouts may not render well on small screens
 
 ---
 
@@ -213,6 +214,7 @@ Vault accepts CSV or Excel files. Column names are **case-insensitive** — `Foo
 - 🏦 **Bank export formats** — direct support for common bank statement CSV formats
 - 🔔 **Spending alerts** — monthly reminders and budget threshold notifications
 - 📥 **Export data** — download your spending history as CSV or PDF report
+- 📱 **Mobile responsive UI** — optimized layouts for smaller screens
 
 ---
 
